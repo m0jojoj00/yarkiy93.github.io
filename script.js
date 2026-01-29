@@ -1,5 +1,5 @@
 const TOKEN = "8385634017:AAHCnvVkUe6v7MH8EGSd4wj5y35eaZoeCKg";
-const CHAT_ID = "6191842598";
+const CHAT_ID = "-1003869892653";
 
 document.querySelector("form")?.addEventListener("submit", async (e) => {
   e.preventDefault();
