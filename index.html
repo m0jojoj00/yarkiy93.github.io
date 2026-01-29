@@ -1496,26 +1496,22 @@
               <input id="name" name="name" placeholder="Алексей" autocomplete="name" required />
             </div>
             <div class="field">
-              <label for="contact">Контакт (Telegram/Email)</label>
-              <input id="contact" name="contact" placeholder="@username или name@company.com" required />
+              <label for="phone">Номер телефона</label>
+              <input id="phone" name="phone" type="tel" placeholder="+7 999 123‑45‑67" autocomplete="tel" required />
             </div>
             <div class="field">
-              <label for="company">Компания</label>
-              <input id="company" name="company" placeholder="Название / ниша" />
+              <label for="email">Почта</label>
+              <input id="email" name="email" type="email" placeholder="name@company.com" autocomplete="email" required />
             </div>
             <div class="field">
-              <label for="goal">Цель</label>
-              <input id="goal" name="goal" placeholder="Убрать рутину лидов / поддержка / документы…" />
-            </div>
-            <div class="field" style="grid-column:1/-1;">
-              <label for="details">Коротко опишите процесс (2–3 предложения)</label>
-              <textarea id="details" name="details" placeholder="Где сейчас боль? Что занимает много времени? Где теряются деньги?"></textarea>
+              <label for="messenger">Telegram / WhatsApp</label>
+              <input id="messenger" name="messenger" placeholder="@username или +62..." required />
             </div>
           </div>
 
-          <div style="margin-top:12px; display:flex; gap:12px; flex-wrap:wrap;">
-            <button class="btn btnPrimary" type="submit">
-              <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M21 3L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M21 3l-6 18-4-8-8-4 18-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          <div class="actions">
+            <button class="btn primary" type="submit">
+              <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 12l16-8-4 16-4-6-8-2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               Отправить запрос
             </button>
             <button class="btn" type="button" id="fillDemo">
@@ -1730,11 +1726,9 @@
       // Fill demo
       document.getElementById('fillDemo').addEventListener('click', ()=>{
         document.getElementById('name').value = 'Алексей';
-        document.getElementById('contact').value = '@username';
-        document.getElementById('company').value = 'B2B‑сервис / 8 менеджеров';
-        document.getElementById('goal').value = 'Ускорить ответы и убрать ручную квалификацию лидов';
-        document.getElementById('details').value =
-          'Лиды идут с сайта и email. Сейчас 30–40% теряется из-за задержек.\nНужно: авто‑квалификация, создание сделок и задач в CRM, контроль SLA и отчёт по эффекту.';
+        document.getElementById('phone').value = '+7 999 123‑45‑67';
+        document.getElementById('email').value = 'name@company.com';
+        document.getElementById('messenger').value = '@username';
         showToast('Пример заполнен ✨');
       });
 
@@ -1743,13 +1737,12 @@
         e.preventDefault();
 
         const name = (document.getElementById('name').value || '').trim();
-        const contact = (document.getElementById('contact').value || '').trim();
-        const company = (document.getElementById('company').value || '').trim();
-        const goal = (document.getElementById('goal').value || '').trim();
-        const details = (document.getElementById('details').value || '').trim();
+        const phone = (document.getElementById('phone').value || '').trim();
+        const email = (document.getElementById('email').value || '').trim();
+        const messenger = (document.getElementById('messenger').value || '').trim();
 
-        if(!name || !contact){
-          showToast('Заполните имя и контакт.');
+        if(!name || !phone || !email || !messenger){
+          showToast('Заполните имя, телефон, почту и Telegram/WhatsApp.');
           return;
         }
 
@@ -1765,7 +1758,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              name, contact, company, goal, details,
+              name, phone, email, messenger,
               plan: currentPlan(),
               page: window.location.href,
               ts: new Date().toISOString(),
@@ -1773,6 +1766,28 @@
               ref: document.referrer || ''
             })
           });
+
+          const data = await resp.json().catch(()=> ({}));
+          if(!resp.ok || data.ok === false){
+            const tgDesc = data?.telegram?.description;
+            const hint = data?.hint;
+            const base = tgDesc || data.error || data.description || ('HTTP ' + resp.status);
+            throw new Error(hint && tgDesc ? (base + ' — ' + hint) : (hint && !tgDesc ? (hint + ' (' + base + ')') : base));
+          }
+          hide();
+          showToast('Заявка отправлена. Мы свяжемся с вами.');
+          form.reset();
+        }catch(err){
+          console.error(err);
+          showToast('Не удалось отправить. Проверьте Webhook и попробуйте ещё раз.');
+        }finally{
+          if(submitBtn){
+            submitBtn.disabled = false;
+            submitBtn.textContent = prevText || 'Отправить запрос';
+          }
+        }
+      });
+
 
           const data = await resp.json().catch(()=> ({}));
           if(!resp.ok || data.ok === false){
