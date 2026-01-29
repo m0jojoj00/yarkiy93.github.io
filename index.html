@@ -1496,22 +1496,23 @@
               <input id="name" name="name" placeholder="Алексей" autocomplete="name" required />
             </div>
             <div class="field">
+              <label for="messenger">Telegram / WhatsApp</label>
+              <input id="messenger" name="messenger" placeholder="@username или +62…" required />
+            </div>
+            <div class="field">
               <label for="phone">Номер телефона</label>
-              <input id="phone" name="phone" type="tel" placeholder="+7 999 123‑45‑67" autocomplete="tel" required />
+              <input id="phone" name="phone" placeholder="+7 999 123‑45‑67" autocomplete="tel" required />
             </div>
             <div class="field">
               <label for="email">Почта</label>
-              <input id="email" name="email" type="email" placeholder="name@company.com" autocomplete="email" required />
-            </div>
-            <div class="field">
-              <label for="messenger">Telegram / WhatsApp</label>
-              <input id="messenger" name="messenger" placeholder="@username или +62..." required />
+              <input id="email" name="email" placeholder="name@company.com" autocomplete="email" required />
             </div>
           </div>
+          </div>
 
-          <div class="actions">
-            <button class="btn primary" type="submit">
-              <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 12l16-8-4 16-4-6-8-2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          <div style="margin-top:12px; display:flex; gap:12px; flex-wrap:wrap;">
+            <button class="btn btnPrimary" type="submit">
+              <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M21 3L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M21 3l-6 18-4-8-8-4 18-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               Отправить запрос
             </button>
             <button class="btn" type="button" id="fillDemo">
@@ -1766,28 +1767,6 @@
               ref: document.referrer || ''
             })
           });
-
-          const data = await resp.json().catch(()=> ({}));
-          if(!resp.ok || data.ok === false){
-            const tgDesc = data?.telegram?.description;
-            const hint = data?.hint;
-            const base = tgDesc || data.error || data.description || ('HTTP ' + resp.status);
-            throw new Error(hint && tgDesc ? (base + ' — ' + hint) : (hint && !tgDesc ? (hint + ' (' + base + ')') : base));
-          }
-          hide();
-          showToast('Заявка отправлена. Мы свяжемся с вами.');
-          form.reset();
-        }catch(err){
-          console.error(err);
-          showToast('Не удалось отправить. Проверьте Webhook и попробуйте ещё раз.');
-        }finally{
-          if(submitBtn){
-            submitBtn.disabled = false;
-            submitBtn.textContent = prevText || 'Отправить запрос';
-          }
-        }
-      });
-
 
           const data = await resp.json().catch(()=> ({}));
           if(!resp.ok || data.ok === false){
