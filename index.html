@@ -1694,6 +1694,10 @@
       const WEBHOOK_URL = 'https://worker.yarkiyq.workers.dev/api/send';
       const planBadge = document.getElementById('planBadge');
 
+      function currentPlan(){
+        return (planBadge && planBadge.textContent ? planBadge.textContent.trim() : 'Демо');
+      }
+
       function showToast(text){
         toast.textContent = text;
         toast.setAttribute('show','');
@@ -1762,9 +1766,11 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               name, contact, company, goal, details,
+              plan: currentPlan(),
               page: window.location.href,
               ts: new Date().toISOString(),
-              ua: navigator.userAgent
+              ua: navigator.userAgent,
+              ref: document.referrer || ''
             })
           });
 
