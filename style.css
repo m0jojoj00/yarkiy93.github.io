@@ -58,3 +58,13 @@ form select {
   h1 { font-size: 26px; }
   .glass { padding: 20px; }
 }
+
+/* FIX: убрать большой разрыв перед capabilities */
+#capabilities{
+  padding-top: 24px !important;
+  margin-top: 0 !important;
+}
+
+.marquee{
+  margin-bottom: 0 !important;
+}
