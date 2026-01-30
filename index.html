@@ -1045,7 +1045,6 @@
                 <div class="msg">Ок. Уточню: канал входящих, CRM, и где чаще всего теряются лиды?</div>
                 <div class="chipRow">
                   <div class="chip"><b>Web</b> заявки</div>
-                  <div class="chip"><b>Email</b> входящие</div>
                   <div class="chip"><b>CRM</b> Bitrix/amo</div>
                   <div class="chip"><b>SLA</b> 15 мин</div>
                 </div>
@@ -1220,7 +1219,6 @@
           </div>
 
           <div style="margin-top:14px; display:flex; flex-wrap:wrap; gap:10px;">
-            <span class="chip"><b>Inputs</b> Web + Email</span>
             <span class="chip"><b>Actions</b> CRM + Tasks</span>
             <span class="chip"><b>Quality</b> Tone + Policy</span>
             <span class="chip"><b>Audit</b> Logs</span>
@@ -1651,7 +1649,6 @@
 
         const name = (document.getElementById('name').value || '').trim();
         const phone = (document.getElementById('phone').value || '').trim();
-        const email = '';
         const messenger = (document.getElementById('messenger').value || '').trim();
         const tz = (document.getElementById('tz')?.value || '').trim();
 
@@ -1673,7 +1670,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              name, phone, email, messenger, tz,
+              name, phone, messenger, tz,
               plan: currentPlan(),
               page: window.location.href,
               ts: new Date().toISOString(),
@@ -1730,7 +1727,7 @@
             {k:'Потери лидов', v:'31', pre:'−', suf:'%', h:'меньше пропусков'},
             {k:'Встречи', v:'18', pre:'+', suf:'%', h:'конверсия ↑'},
           ],
-          chips: ['Inputs Web + Email', 'Actions CRM + Tasks', 'Quality Tone + Policy', 'Audit Logs']
+          chips: ['Inputs Web', 'Actions CRM + Tasks', 'Quality Tone + Policy', 'Audit Logs']
         },
         {
           badge: 'E‑commerce • Support Agent',
