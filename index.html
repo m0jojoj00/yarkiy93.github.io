@@ -1416,8 +1416,8 @@
               <input id="phone" name="phone" placeholder="+7 999 123‑45‑67" autocomplete="tel" required />
             </div>
             <div class="field">
-              <label for="email">Почта</label>
-              <input id="email" name="email" placeholder="name@company.com" autocomplete="email" required />
+              <label for="tz">Ваше ТЗ</label>
+              <textarea id="tz" name="tz" rows="4" placeholder="Опишите задачу: что нужно автоматизировать, где сейчас боль, какой результат хотите."></textarea>
             </div>
           </div>
           </div>
@@ -1640,8 +1640,8 @@
       document.getElementById('fillDemo').addEventListener('click', ()=>{
         document.getElementById('name').value = 'Алексей';
         document.getElementById('phone').value = '+7 999 123‑45‑67';
-        document.getElementById('email').value = 'name@company.com';
         document.getElementById('messenger').value = '@username';
+        document.getElementById('tz').value = 'Нужно: автоматически принимать заявки с сайта, квалифицировать лидов и отправлять менеджеру в Telegram с кратким резюме.';
         showToast('Пример заполнен ✨');
       });
 
@@ -1651,8 +1651,9 @@
 
         const name = (document.getElementById('name').value || '').trim();
         const phone = (document.getElementById('phone').value || '').trim();
-        const email = (document.getElementById('email').value || '').trim();
         const messenger = (document.getElementById('messenger').value || '').trim();
+        const tz = (document.getElementById('tz')?.value || '').trim();
+
 
         if(!name || !phone || !email || !messenger){
           showToast('Заполните имя, телефон, почту и Telegram/WhatsApp.');
@@ -1671,7 +1672,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              name, phone, email, messenger,
+              name, phone, messenger, tz,
               plan: currentPlan(),
               page: window.location.href,
               ts: new Date().toISOString(),
