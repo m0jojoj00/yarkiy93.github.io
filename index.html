@@ -969,10 +969,6 @@
         </nav>
 
         <div class="navCtas">
-          <div class="pill" id="statusPill" role="button" tabindex="0" aria-label="Статус">
-            <span class="dot" aria-hidden="true"></span>
-            <span style="font-size:13px;color:rgba(233,235,255,.84)">AI‑агенты • Prod‑уровень</span>
-          </div>
           <button class="btn hamb" id="menuBtn" aria-label="Открыть меню">
             <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </button>
@@ -1793,9 +1789,7 @@
       document.getElementById('emailLink').addEventListener('click', (e)=>{ e.preventDefault(); window.location.href='mailto:compactai@yandex.com'; });
       document.getElementById('tgLink').addEventListener('click', (e)=>{ e.preventDefault(); window.open('https://t.me/compactAI','_blank','noopener'); });
       // Accessibility: status pill acts as button
-      const pill = document.getElementById('statusPill');
-      pill.addEventListener('click', ()=>showToast('AI‑агенты: включены ✅'));
-      pill.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); showToast('AI‑агенты: включены ✅'); } });
+      
     })();
 
     // ===========
