@@ -1688,7 +1688,7 @@
       const planBadge = document.getElementById('planBadge');
 
       function currentPlan(){
-        return (planBadge && planBadge.textContent ? planBadge.textContent.trim() : 'Демо');
+        return (planBadge && planBadge.textContent ? planBadge.textContent.trim() : 'Request');
       }
 
       function showToast(text){
@@ -1711,7 +1711,7 @@
         document.body.style.overflow = '';
       }
 
-      openers.forEach(btn=>btn.addEventListener('click', ()=>open('Демо')));
+      openers.forEach(btn=>btn.addEventListener('click', ()=>open('Request')));
       document.querySelectorAll('[data-plan]').forEach(btn=>{
         btn.addEventListener('click', ()=>open(btn.getAttribute('data-plan')));
       });
