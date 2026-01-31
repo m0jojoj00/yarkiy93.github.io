@@ -1835,6 +1835,120 @@
       });
     })();
 
+    (function(){
+      const box = document.getElementById('quizBox');
+      if(!box) return;
+
+      const qEl = document.getElementById('quizQ');
+      const optsEl = document.getElementById('quizOpts');
+      const dotsEl = document.getElementById('quizDots');
+      const stepEl = document.getElementById('quizStep');
+      const backBtn = document.getElementById('quizBack');
+      const editBtn = document.getElementById('quizEdit');
+      const doneBtn = document.getElementById('openModal4');
+      const summaryEl = document.getElementById('quizSummary');
+      const quizInput = document.getElementById('quiz');
+
+      const questions = [
+        { k:'Задача', q:'Что хотите автоматизировать в первую очередь?', opts:['Лиды и продажи','Поддержка клиентов','Документы и рутина','Другое'] },
+        { k:'Каналы', q:'Где сейчас это происходит?', opts:['CRM','Почта','Telegram/WhatsApp','Таблицы','Всё сразу'] },
+        { k:'Эффект', q:'Какой результат важнее?', opts:['Скорость ответа','Меньше потерь','Меньше рутины','Контроль качества'] },
+      ];
+
+      const state = { i: 0, a: new Array(questions.length).fill(null) };
+
+      function escapeHtml(str){
+        return (str+'').replace(/[&<>"']/g, (m)=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+      }
+
+      function summaryString(){
+        return questions.map((qq, i)=> `${qq.k}: ${state.a[i] || '—'}`).join(' | ');
+      }
+
+      function renderDots(){
+        dotsEl.innerHTML = questions.map((_, j)=>{
+          const on = j <= state.i ? ' on' : '';
+          return `<span class="qDot${on}"></span>`;
+        }).join('');
+      }
+
+      function render(){
+        renderDots();
+        stepEl.textContent = `Шаг ${state.i + 1} из ${questions.length}`;
+
+        summaryEl.style.display = 'none';
+        editBtn.style.display = 'none';
+        doneBtn.style.display = 'none';
+        qEl.style.display = '';
+        optsEl.style.display = '';
+
+        qEl.textContent = questions[state.i].q;
+        optsEl.innerHTML = '';
+        questions[state.i].opts.forEach((opt)=>{
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'btn';
+          b.textContent = opt;
+          b.addEventListener('click', ()=> pick(opt));
+          optsEl.appendChild(b);
+        });
+
+        backBtn.style.visibility = state.i === 0 ? 'hidden' : 'visible';
+      }
+
+      function showSummary(){
+        dotsEl.innerHTML = questions.map(()=>'<span class="qDot on"></span>').join('');
+        stepEl.textContent = 'Готово';
+
+        qEl.style.display = 'none';
+        optsEl.style.display = 'none';
+        summaryEl.style.display = 'flex';
+        editBtn.style.display = 'inline-flex';
+        doneBtn.style.display = 'inline-flex';
+
+        const chips = questions.map((qq, i)=>(
+          `<span class="quizChip"><b>${qq.k}:</b> ${escapeHtml(state.a[i] || '—')}</span>`
+        )).join('');
+
+        summaryEl.innerHTML = chips + `<span class="quizChip"><b>Дальше:</b> оставьте контакты — пришлём демо‑сценарий</span>`;
+
+        const s = summaryString();
+        if(quizInput) quizInput.value = s;
+        window.__quiz = { answers: state.a.slice(), summary: s };
+      }
+
+      function pick(opt){
+        state.a[state.i] = opt;
+        if(state.i < questions.length - 1){
+          state.i += 1;
+          render();
+        } else {
+          showSummary();
+        }
+      }
+
+      backBtn?.addEventListener('click', ()=>{
+        if(state.i > 0){
+          state.i -= 1;
+          render();
+        }
+      });
+
+      editBtn?.addEventListener('click', ()=>{
+        state.i = 0;
+        render();
+      });
+
+      // Ensure quiz is captured even if user clicks "Оставить заявку" without completing
+      doneBtn?.addEventListener('click', ()=>{
+        if(quizInput && !quizInput.value){
+          quizInput.value = summaryString();
+        }
+      });
+
+      render();
+    })();
+
     // year
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
