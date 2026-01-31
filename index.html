@@ -1411,11 +1411,7 @@
               <label for="messenger">Telegram / WhatsApp</label>
               <input id="messenger" name="messenger" placeholder="@username или +62…" required />
             </div>
-            <div class="field">
-              <label for="phone">Номер телефона</label>
-              <input id="phone" name="phone" placeholder="+7 999 123‑45‑67" autocomplete="tel" required />
-            </div>
-            <div class="field">
+<div class="field">
               <label for="email">Почта</label>
               <input id="email" name="email" placeholder="name@company.com" autocomplete="email" required />
             </div>
@@ -1634,9 +1630,7 @@
 
       // Fill demo
       document.getElementById('fillDemo').addEventListener('click', ()=>{
-        document.getElementById('name').value = 'Алексей';
-        document.getElementById('phone').value = '+7 999 123‑45‑67';
-        document.getElementById('email').value = 'name@company.com';
+        document.getElementById('name').value = 'Алексей';        document.getElementById('email').value = 'name@company.com';
         document.getElementById('messenger').value = '@username';
         showToast('Пример заполнен ✨');
       });
@@ -1645,13 +1639,11 @@
       form.addEventListener('submit', async (e)=>{
         e.preventDefault();
 
-        const name = (document.getElementById('name').value || '').trim();
-        const phone = (document.getElementById('phone').value || '').trim();
-        const email = (document.getElementById('email').value || '').trim();
+        const name = (document.getElementById('name').value || '').trim();        const email = (document.getElementById('email').value || '').trim();
         const messenger = (document.getElementById('messenger').value || '').trim();
 
-        if(!name || !phone || !email || !messenger){
-          showToast('Заполните имя, телефон, почту и Telegram/WhatsApp.');
+        if(!name || !email || !messenger){
+          showToast('Заполните имя, почту и Telegram/WhatsApp.');
           return;
         }
 
@@ -1667,7 +1659,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              name, phone, email, messenger,
+              name, email, messenger,
               plan: currentPlan(),
               page: window.location.href,
               ts: new Date().toISOString(),
