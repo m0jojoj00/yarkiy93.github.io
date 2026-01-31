@@ -1764,6 +1764,7 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               name, phone, email, messenger, tz, 
+              description: tz,
               plan: currentPlan(),
               page: window.location.href,
               ts: new Date().toISOString(),
