@@ -31,6 +31,56 @@ ${description}
     })
   });
 
+
+  
+
   alert("Заявка отправлена. Мы свяжемся с вами.");
   e.target.reset();
 });
+
+(function () {
+  function cleanHash() {
+    // убирает #... из адресной строки, оставляя только домен + путь/параметры
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
+
+  function scrollToId(id) {
+    const el = document.getElementById(id);
+    if (!el) return false;
+
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // даём браузеру начать скролл и затем чистим URL
+    setTimeout(cleanHash, 50);
+    return true;
+  }
+
+  // 1) Перехват кликов по якорям
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a) return;
+
+    const href = a.getAttribute('href');
+    if (!href || href === '#') return;
+
+    const id = href.slice(1);
+    // если такой секции нет — не мешаем стандартному поведению
+    if (!document.getElementById(id)) return;
+
+    e.preventDefault();
+    scrollToId(id);
+  });
+
+  // 2) Если пользователь открыл страницу сразу с #секцией — проскроллить и убрать #
+  window.addEventListener('load', () => {
+    if (!window.location.hash) return;
+    const id = window.location.hash.slice(1);
+    if (id && document.getElementById(id)) {
+      // маленькая задержка, чтобы всё успело отрендериться
+      setTimeout(() => scrollToId(id), 50);
+    } else {
+      // если hash “битый” — просто чистим
+      cleanHash();
+    }
+  });
+})();
